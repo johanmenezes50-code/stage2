@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complete Your Application</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f3;
+      color: #1a1a1a;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    .app {
+      max-width: 680px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 2rem 2.5rem 3rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid #e8e8e5;
+      margin-bottom: 2rem;
+    }
+    .logo { font-size: 20px; font-weight: 600; color: #1a1a1a; }
+    .logo span { color: #1D9E75; }
+
+    /* Steps */
+    .steps {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+    .step { display: flex; align-items: center; gap: 8px; }
+    .step-num {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600; flex-shrink: 0;
+    }
+    .step.done .step-num { background: #1D9E75; color: white; }
+    .step.active .step-num { background: #1a1a1a; color: white; }
+    .step.inactive .step-num { background: #f0f0ee; color: #888; border: 1px solid #ddd; }
+    .step-label { font-size: 13px; color: #888; }
+    .step.active .step-label { color: #1a1a1a; font-weight: 500; }
+    .step-divider { flex: 1; height: 1px; background: #e8e8e5; margin: 0 12px; }
+
+    /* Typography */
+    .section-title { font-size: 24px; font-weight: 600; color: #1a1a1a; margin-bottom: 0.5rem; }
+    .section-sub { font-size: 15px; color: #666; line-height: 1.7; margin-bottom: 1.5rem; }
+
+    /* Info card */
+    .info-card {
+      background: #f8f8f6;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .info-card p { font-size: 14px; color: #555; line-height: 1.7; }
+    .info-card p + p { margin-top: 0.75rem; }
+    .info-card strong { color: #1a1a1a; font-weight: 600; display: block; margin-bottom: 0.25rem; }
+
+    /* Upload */
+    .upload-section { margin-bottom: 1.75rem; }
+    .upload-section h3 { font-size: 15px; font-weight: 600; margin-bottom: 0.25rem; }
+    .upload-desc { font-size: 13px; color: #666; margin-bottom: 0.75rem; line-height: 1.5; }
+    .upload-box {
+      border: 1.5px dashed #d0d0cc;
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .upload-box:hover { background: #f8f8f6; border-color: #1D9E75; }
+    .upload-icon { font-size: 28px; margin-bottom: 0.5rem; }
+    .upload-box .cta { font-size: 13px; color: #1D9E75; font-weight: 600; margin-bottom: 4px; }
+    .upload-box .hint { font-size: 12px; color: #999; }
+    .upload-box .filename { font-size: 12px; color: #1D9E75; margin-top: 6px; font-weight: 500; }
+
+    /* Divider */
+    hr { border: none; border-top: 1px solid #e8e8e5; margin: 2rem 0; }
+
+    /* Consent */
+    .consent-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 0.875rem 0;
+      border-bottom: 1px solid #f0f0ee;
+    }
+    .consent-item:last-of-type { border-bottom: none; }
+    .consent-item input[type=checkbox] { margin-top: 2px; flex-shrink: 0; width: 16px; height: 16px; accent-color: #1D9E75; }
+    .consent-item label { font-size: 14px; color: #333; line-height: 1.6; cursor: pointer; }
+
+    .radio-group { margin: 1.25rem 0; }
+    .group-label { font-size: 14px; font-weight: 600; display: block; margin-bottom: 0.6rem; }
+    .radio-option { display: flex; align-items: center; gap: 8px; margin-bottom: 0.5rem; font-size: 14px; color: #333; cursor: pointer; }
+    .radio-option input { width: 16px; height: 16px; accent-color: #1D9E75; }
+
+    /* Required */
+    .req { color: #D85A30; margin-left: 2px; }
+
+    /* Buttons */
+    .btn-row { display: flex; gap: 10px; margin-top: 2rem; }
+    .btn {
+      padding: 11px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      background: transparent;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+    .btn:hover { background: #f5f5f3; }
+    .btn.primary {
+      background: #1a1a1a;
+      color: white;
+      border-color: transparent;
+    }
+    .btn.primary:hover { background: #333; }
+
+    /* Pages */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    @media (max-width: 520px) {
+      .app { padding: 1.5rem 1.25rem 2rem; }
+      .step-label { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <div class="logo">Your<span>Brand</span></div>
+  </div>
+
+  <div class="steps">
+    <div class="step done" id="s1">
+      <div class="step-num">1</div>
+      <span class="step-label">Welcome</span>
+    </div>
+    <div class="step-divider"></div>
+    <div class="step active" id="s2">
+      <div class="step-num">2</div>
+      <span class="step-label">Documents</span>
+    </div>
+    <div class="step-divider"></div>
+    <div class="step inactive" id="s3">
+      <div class="step-num">3</div>
+      <span class="step-label">Consent</span>
+    </div>
+  </div>
+
+  <!-- Page 1: Welcome -->
+  <div class="page active" id="page1">
+    <h1 class="section-title">Complete your application</h1>
+    <p class="section-sub">Thanks for getting this far — you're nearly done. Before we wrap up, here's a quick reminder of what's involved and why this final step matters.</p>
+
+    <div class="info-card">
+      <p><strong>Role A title</strong>Describe the first role here. What does the person do day-to-day? Add hours, flexibility, and expectations.</p>
+      <p><strong>Role B title</strong>Describe the second role here. Outline responsibilities, requirements, and anything candidates should know.</p>
+    </div>
+
+    <p class="section-sub" style="font-size:14px; margin-bottom: 0;">To get you fully set up, we just need a couple of final documents. All information submitted is used solely to verify your identity and is handled confidentially.</p>
+
+    <div class="btn-row">
+      <button class="btn primary" onclick="goTo(2)">Get started</button>
+    </div>
+  </div>
+
+  <!-- Page 2: Documents -->
+  <div class="page" id="page2">
+    <h1 class="section-title">Upload documents</h1>
+    <p class="section-sub">These requirements are in place to meet our compliance obligations. Your information is kept strictly confidential and used for this purpose only.</p>
+
+    <div class="upload-section">
+      <h3>Document 1 <span class="req">*</span></h3>
+      <p class="upload-desc">Describe what this document is and why you need it from the applicant.</p>
+      <div class="upload-box" onclick="document.getElementById('u1').click()">
+        <div class="upload-icon">📄</div>
+        <p class="cta">Take a photo or choose file</p>
+        <p class="hint">JPG, PNG or PDF — max 10MB</p>
+        <input type="file" id="u1" style="display:none" accept=".jpg,.jpeg,.png,.pdf" onchange="showFile(this,'f1')">
+        <p class="filename" id="f1"></p>
+      </div>
+    </div>
+
+    <div class="upload-section">
+      <h3>Document 2 <span class="req">*</span></h3>
+      <p class="upload-desc">Describe what this document is and why you need it from the applicant.</p>
+      <div class="upload-box" onclick="document.getElementById('u2').click()">
+        <div class="upload-icon">📄</div>
+        <p class="cta">Take a photo or choose file</p>
+        <p class="hint">JPG, PNG or PDF — max 10MB</p>
+        <input type="file" id="u2" style="display:none" accept=".jpg,.jpeg,.png,.pdf" onchange="showFile(this,'f2')">
+        <p class="filename" id="f2"></p>
+      </div>
+    </div>
+
+    <div class="upload-section">
+      <h3>Document 3 <span class="req">*</span></h3>
+      <p class="upload-desc">Describe what this document is and why you need it from the applicant.</p>
+      <div class="upload-box" onclick="document.getElementById('u3').click()">
+        <div class="upload-icon">📄</div>
+        <p class="cta">Take a photo or choose file</p>
+        <p class="hint">JPG, PNG or PDF — max 10MB</p>
+        <input type="file" id="u3" style="display:none" accept=".jpg,.jpeg,.png,.pdf" onchange="showFile(this,'f3')">
+        <p class="filename" id="f3"></p>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="goTo(1)">Back</button>
+      <button class="btn primary" onclick="goTo(3)">Continue</button>
+    </div>
+  </div>
+
+  <!-- Page 3: Consent -->
+  <div class="page" id="page3">
+    <h1 class="section-title">Consent</h1>
+    <p class="section-sub">Please review and agree to the following to complete your application.</p>
+
+    <div class="consent-item">
+      <input type="checkbox" id="c1">
+      <label for="c1">Consent statement 1 — describe what the applicant is agreeing to here.</label>
+    </div>
+    <div class="consent-item">
+      <input type="checkbox" id="c2">
+      <label for="c2">Consent statement 2 — describe what the applicant is agreeing to here.</label>
+    </div>
+    <div class="consent-item">
+      <input type="checkbox" id="c3">
+      <label for="c3">Consent statement 3 — describe what the applicant is agreeing to here.</label>
+    </div>
+
+    <hr>
+
+    <div class="radio-group">
+      <span class="group-label">Question 1 <span class="req">*</span></span>
+      <label class="radio-option"><input type="radio" name="q1" value="yes"> Yes</label>
+      <label class="radio-option"><input type="radio" name="q1" value="no"> No</label>
+    </div>
+
+    <div class="radio-group">
+      <span class="group-label">Question 2 <span class="req">*</span></span>
+      <label class="radio-option"><input type="radio" name="q2" value="yes"> Yes</label>
+      <label class="radio-option"><input type="radio" name="q2" value="no"> No</label>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="goTo(2)">Back</button>
+      <button class="btn primary" onclick="handleSubmit()">Submit documents</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function goTo(n) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page' + n).classList.add('active');
+    ['s1','s2','s3'].forEach(function(id, i) {
+      var el = document.getElementById(id);
+      el.className = 'step ' + (i + 1 < n ? 'done' : i + 1 === n ? 'active' : 'inactive');
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showFile(input, labelId) {
+    var lbl = document.getElementById(labelId);
+    lbl.textContent = input.files[0] ? '✓ ' + input.files[0].name : '';
+  }
+
+  function handleSubmit() {
+    alert('Application submitted successfully!');
+  }
+</script>
+</body>
+</html>
