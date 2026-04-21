@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Complete Your Application — Courier Jockey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #f0f4f8;
+    --white: #ffffff;
+    --text: #1e2a3a;
+    --text-soft: #3d5068;
+    --blue: #4a7ab5;
+    --blue-light: #5a8ec9;
+    --blue-dim: rgba(74,122,181,0.12);
+    --grey: #e2e8f0;
+    --grey-mid: #cbd5e1;
+    --grey-light: #64748b;
+    --border: rgba(74,122,181,0.2);
+    --green: #1a7a5e;
+    --red: #c0392b;
+    --radius: 12px;
+    --font-head: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .app {
+    max-width: 680px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 2.5rem 3rem 3rem;
+    box-shadow: 0 4px 24px rgba(74,122,181,0.1);
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--grey);
+    margin-bottom: 2rem;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-head); font-size: 20px; font-weight: 800;
+    color: var(--text);
+  }
+  .logo img { height: 40px; width: auto; border-radius: 8px; }
+  .logo-text span { color: var(--blue); }
+  .stage-badge {
+    font-size: 12px; font-weight: 500; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--blue);
+    background: var(--blue-dim); padding: 5px 12px; border-radius: 50px;
+  }
+
+  /* Steps */
+  .steps {
+    display: flex; align-items: center; margin-bottom: 2.5rem;
+  }
+  .step { display: flex; align-items: center; gap: 8px; }
+  .step-num {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+    font-family: var(--font-head);
+  }
+  .step.done .step-num { background: var(--green); color: white; }
+  .step.active .step-num { background: var(--blue); color: white; }
+  .step.inactive .step-num { background: var(--grey); color: var(--grey-light); }
+  .step-label { font-size: 13px; color: var(--grey-light); font-weight: 400; }
+  .step.active .step-label { color: var(--text); font-weight: 600; }
+  .step.done .step-label { color: var(--green); }
+  .step-divider { flex: 1; height: 1.5px; background: var(--grey); margin: 0 12px; }
+  .step.done + .step-divider { background: var(--green); }
+
+  /* Typography */
+  h1 {
+    font-family: var(--font-head); font-size: 26px; font-weight: 800;
+    color: var(--text); margin-bottom: 0.5rem; letter-spacing: -0.5px;
+  }
+  .sub {
+    font-size: 15px; color: var(--text-soft); line-height: 1.7;
+    margin-bottom: 1.75rem;
+  }
+
+  /* Info card */
+  .info-card {
+    background: var(--bg); border-radius: var(--radius);
+    padding: 1.25rem 1.5rem; margin-bottom: 1.75rem;
+    border: 1px solid var(--border);
+  }
+  .info-card p { font-size: 14px; color: var(--text-soft); line-height: 1.7; }
+  .info-card p + p { margin-top: 0.75rem; }
+  .info-card strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 0.2rem; }
+
+  /* Upload */
+  .upload-section { margin-bottom: 1.75rem; }
+  .upload-label { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; display: block; font-family: var(--font-head); }
+  .upload-desc { font-size: 13px; color: var(--text-soft); margin-bottom: 0.75rem; line-height: 1.5; }
+  .upload-box {
+    border: 2px dashed var(--grey-mid); border-radius: var(--radius);
+    padding: 1.75rem; text-align: center; cursor: pointer;
+    transition: all 0.2s; position: relative;
+  }
+  .upload-box:hover { background: var(--bg); border-color: var(--blue); }
+  .upload-box.uploaded { border-color: var(--green); background: rgba(26,122,94,0.05); border-style: solid; }
+  .upload-box input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-icon { font-size: 28px; margin-bottom: 0.5rem; }
+  .upload-cta { font-size: 14px; color: var(--blue); font-weight: 600; margin-bottom: 4px; }
+  .upload-hint { font-size: 12px; color: var(--grey-light); }
+  .upload-filename { font-size: 13px; color: var(--green); margin-top: 6px; font-weight: 500; }
+
+  .req { color: var(--red); margin-left: 2px; }
+
+  hr { border: none; border-top: 1px solid var(--grey); margin: 2rem 0; }
+
+  /* Consent */
+  .consent-block { margin-bottom: 1rem; }
+  .consent-title { font-family: var(--font-head); font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 0.75rem; }
+  .consent-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 0.875rem 1rem; margin-bottom: 8px;
+    background: var(--bg); border-radius: 10px;
+    border: 1.5px solid transparent; transition: border-color 0.2s;
+    cursor: pointer;
+  }
+  .consent-item:has(input:checked) { border-color: var(--blue); background: var(--blue-dim); }
+  .consent-item input[type=checkbox] { margin-top: 2px; flex-shrink: 0; width: 16px; height: 16px; accent-color: var(--blue); cursor: pointer; }
+  .consent-item label { font-size: 14px; color: var(--text-soft); line-height: 1.6; cursor: pointer; }
+
+  /* Radio */
+  .radio-block { margin-bottom: 1.25rem; }
+  .radio-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 0.6rem; display: block; }
+  .radio-options { display: flex; gap: 10px; flex-wrap: wrap; }
+  .radio-opt {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 18px; background: var(--bg);
+    border: 1.5px solid var(--grey-mid); border-radius: 10px;
+    cursor: pointer; font-size: 14px; color: var(--text-soft);
+    transition: all 0.2s;
+  }
+  .radio-opt.sel { border-color: var(--blue); background: var(--blue-dim); color: var(--text); font-weight: 500; }
+  .radio-opt input { display: none; }
+
+  /* Conditional */
+  .conditional { display: none; margin-top: 10px; padding: 14px 16px; background: var(--bg); border-radius: 10px; border: 1px solid var(--border); }
+  .conditional.show { display: block; }
+  .conditional p { font-size: 14px; color: var(--text-soft); margin-bottom: 10px; }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 10px; margin-top: 2rem; }
+  .btn {
+    padding: 12px 24px; border-radius: 10px; font-size: 14px;
+    font-weight: 500; cursor: pointer; border: 1.5px solid var(--grey-mid);
+    background: transparent; color: var(--text); transition: all 0.2s;
+    font-family: var(--font-body);
+  }
+  .btn:hover { background: var(--bg); }
+  .btn.primary { background: var(--blue); color: white; border-color: transparent; }
+  .btn.primary:hover { background: var(--blue-light); }
+
+  /* Pages */
+  .page { display: none; animation: fadeIn 0.3s ease; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  /* Error */
+  .err-msg { color: var(--red); font-size: 12px; margin-top: 6px; display: none; }
+  .err-msg.show { display: block; }
+
+  /* Success */
+  .success { text-align: center; padding: 40px 20px; }
+  .success-icon { font-size: 56px; margin-bottom: 16px; }
+  .success h1 { color: var(--green); margin-bottom: 10px; }
+  .success p { color: var(--text-soft); font-size: 15px; line-height: 1.7; }
+
+  @media (max-width: 520px) {
+    .app { padding: 1.5rem 1.25rem 2rem; }
+    .step-label { display: none; }
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <div class="logo">
+      <img src="Gemini_Generated_Image_skeigeskeigeskei (1).png" alt="Courier Jockey logo"/>
+      <span class="logo-text">Courier <span>Jockey</span></span>
+    </div>
+    <div class="stage-badge">Stage 2 of 2</div>
+  </div>
+
+  <div class="steps">
+    <div class="step done" id="s1"><div class="step-num">✓</div><span class="step-label">Application</span></div>
+    <div class="step-divider"></div>
+    <div class="step active" id="s2"><div class="step-num">2</div><span class="step-label">Documents</span></div>
+    <div class="step-divider"></div>
+    <div class="step inactive" id="s3"><div class="step-num">3</div><span class="step-label">Consent</span></div>
+  </div>
+
+  <!-- Page 1: Welcome -->
+  <div class="page active" id="page1">
+    <h1>Complete your application</h1>
+    <p class="sub">Congratulations on making it this far! You're nearly done. We just need a few final documents and consents to get you fully set up with Courier Jockey.</p>
+
+    <div class="info-card">
+      <p><strong>Why do we need this?</strong>These documents help us verify your identity and meet our compliance obligations. All information submitted is handled confidentially and used solely for onboarding purposes.</p>
+      <p><strong>How long does it take?</strong>This final step takes around 3–5 minutes. Make sure you have your documents handy before you begin.</p>
+    </div>
+
+    <p class="sub" style="font-size:14px;margin-bottom:0;">Once submitted, our team will review your application and be in touch within 2 business days.</p>
+
+    <div class="btn-row">
+      <button class="btn primary" onclick="goTo(2)">Get started →</button>
+    </div>
+  </div>
+
+  <!-- Page 2: Documents -->
+  <div class="page" id="page2">
+    <h1>Upload documents</h1>
+    <p class="sub">Please upload clear photos or scans of the following documents. JPG, PNG or PDF accepted, max 10MB each.</p>
+
+    <div class="upload-section">
+      <span class="upload-label">Document 1 <span class="req">*</span></span>
+      <p class="upload-desc">Upload a clear photo or scan of your first document.</p>
+      <div class="upload-box" id="box1" onclick="document.getElementById('u1').click()">
+        <input type="file" id="u1" accept=".jpg,.jpeg,.png,.pdf" onchange="showFile(this,'f1','box1')"/>
+        <div class="upload-icon">📄</div>
+        <p class="upload-cta">Take a photo or choose file</p>
+        <p class="upload-hint">JPG, PNG or PDF — max 10MB</p>
+        <p class="upload-filename" id="f1"></p>
+      </div>
+      <div class="err-msg" id="e1">Please upload Document 1</div>
+    </div>
+
+    <div class="upload-section">
+      <span class="upload-label">Document 2 <span class="req">*</span></span>
+      <p class="upload-desc">Upload a clear photo or scan of your second document.</p>
+      <div class="upload-box" id="box2" onclick="document.getElementById('u2').click()">
+        <input type="file" id="u2" accept=".jpg,.jpeg,.png,.pdf" onchange="showFile(this,'f2','box2')"/>
+        <div class="upload-icon">📄</div>
+        <p class="upload-cta">Take a photo or choose file</p>
+        <p class="upload-hint">JPG, PNG or PDF — max 10MB</p>
+        <p class="upload-filename" id="f2"></p>
+      </div>
+      <div class="err-msg" id="e2">Please upload Document 2</div>
+    </div>
+
+    <div class="upload-section">
+      <span class="upload-label">Document 3 <span class="req">*</span></span>
+      <p class="upload-desc">Upload a clear photo or scan of your third document.</p>
+      <div class="upload-box" id="box3" onclick="document.getElementById('u3').click()">
+        <input type="file" id="u3" accept=".jpg,.jpeg,.png,.pdf" onchange="showFile(this,'f3','box3')"/>
+        <div class="upload-icon">📄</div>
+        <p class="upload-cta">Take a photo or choose file</p>
+        <p class="upload-hint">JPG, PNG or PDF — max 10MB</p>
+        <p class="upload-filename" id="f3"></p>
+      </div>
+      <div class="err-msg" id="e3">Please upload Document 3</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="goTo(1)">← Back</button>
+      <button class="btn primary" onclick="validateDocs()">Continue →</button>
+    </div>
+  </div>
+
+  <!-- Page 3: Consent -->
+  <div class="page" id="page3">
+    <h1>Consent &amp; declarations</h1>
+    <p class="sub">Please read and agree to the following before submitting your application.</p>
+
+    <div class="consent-block">
+      <div class="consent-title">Background checks</div>
+      <div class="consent-item" onclick="toggleCheck('c1')">
+        <input type="checkbox" id="c1"/>
+        <label for="c1">I consent to Courier Jockey conducting a <strong>police check</strong> as part of my employment application. I understand this will be used solely for employment screening purposes.</label>
+      </div>
+      <div class="consent-item" onclick="toggleCheck('c2')">
+        <input type="checkbox" id="c2"/>
+        <label for="c2">I consent to Courier Jockey conducting a <strong>background check</strong> to verify my employment history and qualifications. I understand this information will be kept confidential.</label>
+      </div>
+      <div class="consent-item" onclick="toggleCheck('c3')">
+        <input type="checkbox" id="c3"/>
+        <label for="c3">I confirm I have the <strong>right to work in Australia</strong> and that the documents I have provided accurately reflect my work entitlements.</label>
+      </div>
+    </div>
+
+    <hr/>
+
+    <div class="radio-block">
+      <span class="radio-title">Do you have an ABN (Australian Business Number)? <span class="req">*</span></span>
+      <div class="radio-options">
+        <div class="radio-opt" id="abn-yes" onclick="radioSel('abn','yes');document.getElementById('abn-conditional').classList.add('show')">
+          <input type="radio" name="abn" value="yes"/> Yes
+        </div>
+        <div class="radio-opt" id="abn-no" onclick="radioSel('abn','no');document.getElementById('abn-conditional').classList.remove('show')">
+          <input type="radio" name="abn" value="no"/> No
+        </div>
+      </div>
+      <div class="conditional" id="abn-conditional">
+        <p>If yes, please note that some of our roles may require you to work under your ABN as a contractor.</p>
+        <div class="radio-block" style="margin-bottom:0;">
+          <span class="radio-title">Are you willing to work under your ABN if required? <span class="req">*</span></span>
+          <div class="radio-options">
+            <div class="radio-opt" id="wabn-yes" onclick="radioSel('wabn','yes')"><input type="radio" name="wabn" value="yes"/> Yes</div>
+            <div class="radio-opt" id="wabn-no" onclick="radioSel('wabn','no')"><input type="radio" name="wabn" value="no"/> No</div>
+          </div>
+        </div>
+      </div>
+      <div class="err-msg" id="e-abn">Please answer this question</div>
+    </div>
+
+    <div class="err-msg" id="e-consent" style="font-size:13px;margin-bottom:8px;">Please agree to all consent items above before submitting</div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="goTo(2)">← Back</button>
+      <button class="btn primary" onclick="handleSubmit()">Submit documents</button>
+    </div>
+  </div>
+
+  <!-- Success -->
+  <div class="page" id="page-ok">
+    <div class="success">
+      <div class="success-icon">🎉</div>
+      <h1>All done!</h1>
+      <p>Your documents and consents have been submitted successfully.<br/>Our team will review everything and be in touch within <strong>2 business days</strong>.<br/><br/>Welcome to the Courier Jockey family!</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var radios = {};
+
+function goTo(n) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  var id = n === 'ok' ? 'page-ok' : 'page' + n;
+  document.getElementById(id).classList.add('active');
+  var steps = ['s1','s2','s3'];
+  steps.forEach(function(sid, i) {
+    var el = document.getElementById(sid);
+    if(typeof n === 'number') {
+      if(i + 1 < n) el.className = 'step done';
+      else if(i + 1 === n) el.className = 'step active';
+      else el.className = 'step inactive';
+    }
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showFile(input, labelId, boxId) {
+  var lbl = document.getElementById(labelId);
+  var box = document.getElementById(boxId);
+  if(input.files[0]) {
+    lbl.textContent = '✓ ' + input.files[0].name;
+    box.classList.add('uploaded');
+  }
+}
+
+function validateDocs() {
+  var ok = true;
+  ['u1','u2','u3'].forEach(function(id, i) {
+    var input = document.getElementById(id);
+    var err = document.getElementById('e' + (i+1));
+    if(!input.files[0]) { err.classList.add('show'); ok = false; }
+    else err.classList.remove('show');
+  });
+  if(ok) goTo(3);
+}
+
+function radioSel(name, val) {
+  radios[name] = val;
+  document.querySelectorAll('[id^="' + name + '-"]').forEach(function(el){
+    if(el.classList.contains('radio-opt')) el.classList.remove('sel');
+  });
+  document.getElementById(name + '-' + val).classList.add('sel');
+}
+
+function toggleCheck(id) {
+  var cb = document.getElementById(id);
+  cb.checked = !cb.checked;
+}
+
+function handleSubmit() {
+  var allChecked = document.getElementById('c1').checked && document.getElementById('c2').checked && document.getElementById('c3').checked;
+  var abnAnswered = radios['abn'];
+  var abnOk = true;
+  if(radios['abn'] === 'yes' && !radios['wabn']) abnOk = false;
+
+  if(!allChecked) { document.getElementById('e-consent').classList.add('show'); return; }
+  else document.getElementById('e-consent').classList.remove('show');
+
+  if(!abnAnswered || !abnOk) { document.getElementById('e-abn').classList.add('show'); return; }
+  else document.getElementById('e-abn').classList.remove('show');
+
+  goTo('ok');
+}
+</script>
+</body>
+</html>
